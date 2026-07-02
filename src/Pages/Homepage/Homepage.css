@@ -1,0 +1,270 @@
+/* ============================================================
+   Homepage.css  –  Polaroid Fan Gallery  +  Chakram  +  Dark
+   ============================================================ */
+
+/* ── Page shell ────────────────────────────────────────────── */
+.homepage {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at 22% 8%,  rgba(232,153,81,0.13) 0%, transparent 52%),
+    radial-gradient(ellipse at 78% 95%, rgba(98,43,20,0.24)   0%, transparent 56%),
+    linear-gradient(158deg, #090604 0%, #140c03 38%, #1c1207 72%, #060402 100%);
+}
+
+/* Dot grid */
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,200,80,0.055) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Chakram SVG ────────────────────────────────────────────── */
+.chakram-bg {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Use the smaller viewport axis so it always fits */
+  width: min(70vw, 70vh);
+  height: min(70vw, 70vh);
+  z-index: 0;
+  pointer-events: none;
+  animation: chakram-spin 80s linear infinite;
+}
+
+@keyframes chakram-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ── Hero content wrapper ───────────────────────────────────── */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* push gallery toward lower half – gives good visual balance */
+  justify-content: center;
+  padding-top: 68px;    /* clear fixed header */
+  gap: 0;
+  box-sizing: border-box;
+}
+
+/* ── Title ──────────────────────────────────────────────────── */
+.title-container {
+  cursor: pointer;
+  text-align: center;
+  padding: 46px 24px 12px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.main-title {
+  font-size: clamp(1.5rem, 3.8vw, 3.6rem);
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  background: linear-gradient(
+    118deg,
+    #F7F1DE 0%,
+    #FFDA62 26%,
+    #ECB65F 50%,
+    #E89951 74%,
+    #622B14 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 22px rgba(255,200,60,0.22));
+}
+
+.click-hint {
+  font-size: 0.70rem;
+  color: rgba(255,218,98,0.34);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* ── Fan section (arrows + stage) ──────────────────────────── */
+.fan-section {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;   /* clip outer cards that exceed viewport */
+}
+
+
+
+/* ── Perspective stage ──────────────────────────────────────── */
+.fan-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1300px;
+  perspective-origin: 50% 52%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ground glow beneath cards */
+.stage-ground {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 40px;
+  background: radial-gradient(ellipse, rgba(255,200,60,0.14) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* ── Gallery wrapper ───────────────────────────────────────── */
+.gallery-wrapper {
+  position: absolute;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+/* ── Gallery card ──────────────────────────────────────────── */
+.gallery-card {
+  width: 280px;
+  height: 370px; /* 2:3 ratio */
+  background: transparent;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.62),
+    0  3px 10px rgba(0,0,0,0.40);
+}
+
+/* Image fills the gallery square */
+.gallery-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Sheen overlay */
+.card-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.10) 0%,
+    transparent 45%,
+    rgba(0,0,0,0.06) 100%
+  );
+  pointer-events: none;
+}
+
+/* Center card gets an extra golden halo */
+.center-card {
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.80),
+    0  4px 14px rgba(0,0,0,0.50),
+    0  0  36px rgba(255,200,60,0.16),
+    inset 0 0 0 1px rgba(255,255,255,0.70);
+}
+
+/* ── Floor reflection (center card only) ───────────────────── */
+.floor-reflection {
+  width: 180px;
+  height: 70px;
+  margin-top: 4px;
+  background: linear-gradient(to bottom, rgba(242,237,227,0.30), transparent 90%);
+  transform: scaleY(-1);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.45), transparent);
+  mask-image:         linear-gradient(to bottom, rgba(0,0,0,0.45), transparent);
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+/* ── Question mark card ─────────────────────────────────────── */
+.qm-inner {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #1a0f03, #2e1a06, #1a0f03);
+  border-radius: 2px;
+  gap: 4px;
+}
+
+.qm-char {
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #FFDA62, #E89951);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: qm-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes qm-pulse {
+  0%,100% { filter: drop-shadow(0 0  7px rgba(255,200,60,0.35)); }
+  50%     { filter: drop-shadow(0 0 24px rgba(255,200,60,0.90)); }
+}
+
+.qm-sub {
+  font-size: 0.50rem;
+  color: rgba(255,218,98,0.50);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ── Bottom hint ────────────────────────────────────────────── */
+.nav-hint {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  color: rgba(255,218,98,0.27);
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  padding-bottom: 10px;
+  user-select: none;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .gallery-card { width: 150px; height: 225px; }
+  .floor-reflection { width: 150px; }
+}
+
+@media (max-width: 768px) {
+  .gallery-card { width: 120px; height: 180px; }
+  .qm-char { font-size: 3.2rem; }
+  .floor-reflection { width: 120px; height: 50px; }
+}
+
+@media (max-width: 480px) {
+  .gallery-card { width: 100px; height: 150px; }
+  .qm-char { font-size: 2.5rem; }
+  .floor-reflection { width: 100px; height: 36px; }
+  .click-hint { font-size: 0.60rem; }
+}

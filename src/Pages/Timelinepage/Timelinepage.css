@@ -1,0 +1,295 @@
+/* ============================================================
+   Timelinepage.css  –  Utsav Journey Timeline
+   ============================================================ */
+
+.timeline-page {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(158deg, #090604 0%, #140c03 38%, #1c1207 72%, #060402 100%);
+  padding: 120px 20px 60px;
+  color: #F7F1DE;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.timeline-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.timeline-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  margin: 0 0 15px 0;
+  background: linear-gradient(118deg, #F7F1DE 0%, #FFDA62 26%, #ECB65F 50%, #E89951 74%, #622B14 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.timeline-subtitle {
+  font-size: 1.1rem;
+  color: rgba(247, 241, 222, 0.7);
+  letter-spacing: 1px;
+}
+
+/* ── Timeline Container ───────────────────────────────────── */
+.timeline-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* The vertical center line */
+.timeline-center-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, #FFDA62 10%, #E89951 90%, transparent);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+/* ── Timeline Item ────────────────────────────────────────── */
+.timeline-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+  position: relative;
+  width: 100%;
+}
+
+.timeline-item.right-item {
+  flex-direction: row-reverse;
+}
+
+/* ── Date Text ────────────────────────────────────────────── */
+.timeline-date {
+  width: calc(50% - 50px);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFDA62;
+  letter-spacing: 2px;
+}
+
+.left-item .timeline-date {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.right-item .timeline-date {
+  text-align: left;
+  padding-left: 20px;
+}
+
+/* ── Center Dot ───────────────────────────────────────────── */
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #090604;
+  border: 4px solid #FFDA62;
+  z-index: 3;
+  box-shadow: 0 0 12px rgba(255, 218, 98, 0.6);
+}
+
+/* ── Connector Line ───────────────────────────────────────── */
+.timeline-connector {
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 3px;
+  background: #FFDA62;
+  z-index: 2;
+}
+
+.left-item .timeline-connector {
+  right: 50%;
+}
+
+.right-item .timeline-connector {
+  left: 50%;
+}
+
+/* ── Timeline Card ────────────────────────────────────────── */
+.timeline-card {
+  width: calc(50% - 50px);
+  position: relative;
+  background-color: rgba(232, 153, 81, 0.08);
+  border: 1px solid rgba(255, 218, 98, 0.2);
+  /* Dot pattern background */
+  background-image: radial-gradient(circle, rgba(255,218,98,0.15) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  padding: 25px 30px;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Left side cards have rounded right edge */
+.left-item .timeline-card {
+  border-radius: 8px 80px 80px 8px;
+  padding-right: 110px;
+}
+
+/* Right side cards have rounded left edge */
+.right-item .timeline-card {
+  border-radius: 80px 8px 8px 80px;
+  padding-left: 110px;
+}
+
+.card-content h3 {
+  color: #FFDA62;
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.card-content p {
+  color: #e0d8c3;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Interactive Image Wrapper ────────────────────────────── */
+.card-image-wrapper {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #090604;
+  border: 3px solid #E89951;
+  cursor: pointer;
+  z-index: 5;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-image-wrapper:hover {
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 0 20px rgba(232, 153, 81, 0.6);
+  border-color: #FFDA62;
+}
+
+.left-item .card-image-wrapper {
+  right: 15px;
+}
+
+.right-item .card-image-wrapper {
+  left: 15px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  user-select: none;
+}
+
+/* ── Action Menu Dropdown ─────────────────────────────────── */
+.action-menu {
+  position: absolute;
+  top: 95px; /* Below the image */
+  background: #140c03;
+  border: 1px solid #E89951;
+  border-radius: 8px;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* Position menu slightly offset towards the center of the card */
+.menu-left {
+  right: -30px;
+}
+
+.menu-right {
+  left: -30px;
+}
+
+.action-menu button {
+  background: transparent;
+  border: none;
+  color: #F7F1DE;
+  padding: 12px 20px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: background 0.2s, color 0.2s;
+  width: 100%;
+}
+
+.action-menu button:hover {
+  background: rgba(255, 218, 98, 0.15);
+  color: #FFDA62;
+}
+
+/* ── Responsive Design ────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* On mobile, move the center line to the left */
+  .timeline-center-line {
+    left: 30px;
+  }
+
+  .timeline-item, .timeline-item.right-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 80px;
+  }
+
+  .timeline-date {
+    width: 100%;
+    text-align: left !important;
+    padding: 0 0 10px 0 !important;
+  }
+
+  .timeline-dot {
+    left: 30px;
+    top: 30px;
+    transform: translate(-50%, -50%);
+  }
+
+  .timeline-connector {
+    top: 30px;
+    left: 30px !important;
+    right: auto !important;
+    width: 50px;
+  }
+
+  .timeline-card {
+    width: 100%;
+  }
+
+  /* Make both sides match the right-side capsule shape */
+  .left-item .timeline-card, 
+  .right-item .timeline-card {
+    border-radius: 80px 8px 8px 80px;
+    padding-left: 100px;
+    padding-right: 30px;
+  }
+
+  .left-item .card-image-wrapper, 
+  .right-item .card-image-wrapper {
+    left: 10px;
+    right: auto;
+  }
+}

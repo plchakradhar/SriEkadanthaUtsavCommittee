@@ -1,0 +1,105 @@
+.timer-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.timer-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.timer-card {
+  background: linear-gradient(135deg, #2c1810 0%, #4a2a1a 100%);
+  border-radius: 15px;
+  padding: 25px 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.timer-card:hover {
+  border-color: #ffd700;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+}
+
+.timer-value {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  line-height: 1;
+  margin-bottom: 10px;
+  font-family: 'Courier New', monospace;
+}
+
+.timer-label {
+  font-size: 0.9rem;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .timer-value {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .timer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+  
+  .timer-value {
+    font-size: 2.5rem;
+  }
+  
+  .timer-card {
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .timer-value {
+    font-size: 2rem;
+  }
+  
+  .timer-label {
+    font-size: 0.7rem;
+  }
+  
+  .timer-card {
+    padding: 15px 8px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .timer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .timer-value {
+    font-size: 1.6rem;
+  }
+  
+  .timer-label {
+    font-size: 0.6rem;
+  }
+  
+  .timer-card {
+    padding: 12px 6px;
+  }
+}
