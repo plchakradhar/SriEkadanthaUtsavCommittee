@@ -1,0 +1,353 @@
+/* ============================================================
+   Auctionpage.css – Auction History
+   ============================================================ */
+
+.auction-page {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(158deg, #090604 0%, #140c03 38%, #1c1207 72%, #060402 100%);
+  padding: 120px 20px 80px;
+  color: #F7F1DE;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Animated Background Particles ────────────────────────── */
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  background: radial-gradient(circle, rgba(255,218,98,0.8) 0%, rgba(255,218,98,0) 70%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatUp 8s infinite ease-in-out;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+
+/* Generate random particle positions and delays using CSS nth-child */
+.particle:nth-child(1) { width: 15px; height: 15px; left: 10%; animation-duration: 7s; animation-delay: 0s; }
+.particle:nth-child(2) { width: 10px; height: 10px; left: 20%; animation-duration: 9s; animation-delay: 2s; }
+.particle:nth-child(3) { width: 20px; height: 20px; left: 30%; animation-duration: 11s; animation-delay: 4s; }
+.particle:nth-child(4) { width: 12px; height: 12px; left: 40%; animation-duration: 8s; animation-delay: 1s; }
+.particle:nth-child(5) { width: 25px; height: 25px; left: 50%; animation-duration: 12s; animation-delay: 5s; }
+.particle:nth-child(6) { width: 14px; height: 14px; left: 60%; animation-duration: 7.5s; animation-delay: 3s; }
+.particle:nth-child(7) { width: 18px; height: 18px; left: 70%; animation-duration: 10s; animation-delay: 2.5s; }
+.particle:nth-child(8) { width: 8px; height: 8px; left: 80%; animation-duration: 8.5s; animation-delay: 0.5s; }
+.particle:nth-child(9) { width: 22px; height: 22px; left: 90%; animation-duration: 11.5s; animation-delay: 4.5s; }
+.particle:nth-child(n+10) { width: 12px; height: 12px; left: 45%; animation-duration: 9.5s; animation-delay: 6s; }
+
+
+/* ── Page Content ─────────────────────────────────────────── */
+.auction-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.auction-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.auction-header h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  background: linear-gradient(118deg, #F7F1DE 0%, #FFDA62 26%, #ECB65F 50%, #E89951 74%, #622B14 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auction-header p {
+  font-size: 1.1rem;
+  color: rgba(247, 241, 222, 0.8);
+  letter-spacing: 1px;
+}
+
+/* ── Timeline Layout ──────────────────────────────────────── */
+.auction-timeline-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.vertical-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, #E89951 10%, #FFDA62 50%, #E89951 90%, transparent);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.timeline-year-block {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+/* ── Year Badge ───────────────────────────────────────────── */
+.year-badge-wrapper {
+  background: #140c03;
+  border-radius: 30px;
+  padding: 4px;
+  z-index: 2;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  margin-bottom: 10px;
+}
+
+.year-badge {
+  background: linear-gradient(145deg, #FFDA62, #E89951);
+  color: #090604;
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding: 10px 30px;
+  border-radius: 26px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.3);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.4);
+}
+
+.down-connector {
+  font-size: 1.2rem;
+  color: #FFDA62;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 10px rgba(255, 218, 98, 0.8);
+  z-index: 2;
+}
+
+/* ── Auction Items Row ────────────────────────────────────── */
+.auction-items-row {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+  padding: 20px 0 60px 0;
+  z-index: 2;
+}
+
+/* ── Glassmorphism Card ───────────────────────────────────── */
+.auction-item-card {
+  background: rgba(232, 153, 81, 0.08);
+  border: 1px solid rgba(255, 218, 98, 0.2);
+  border-top: 1px solid rgba(255, 218, 98, 0.4);
+  border-radius: 16px;
+  padding: 25px 20px;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.auction-item-card:hover {
+  box-shadow: 0 15px 40px rgba(255, 218, 98, 0.2), inset 0 0 20px rgba(232, 153, 81, 0.1);
+  border-color: rgba(255, 218, 98, 0.6);
+}
+
+.item-icon-wrapper {
+  background: radial-gradient(circle, rgba(255,218,98,0.2) 0%, transparent 70%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  box-shadow: 0 0 15px rgba(255,218,98,0.1);
+}
+
+.item-icon {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+}
+
+.item-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #FFDA62;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+/* ── Modal Popup ──────────────────────────────────────────── */
+.auction-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(9, 6, 4, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auction-modal-content {
+  background: linear-gradient(180deg, #1c1207 0%, #090604 100%);
+  border: 1px solid rgba(255, 218, 98, 0.3);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+  padding: 30px;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 218, 98, 0.6);
+  font-size: 2.5rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.close-modal-btn:hover {
+  color: #FFDA62;
+  transform: scale(1.1);
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 218, 98, 0.15);
+  padding-bottom: 20px;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  color: #F7F1DE;
+  margin: 0 0 5px 0;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+.modal-header h3 {
+  font-size: 2.2rem;
+  color: #FFDA62;
+  margin: 0;
+}
+
+/* ── Modal Gallery Grid ───────────────────────────────────── */
+.modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  cursor: zoom-in;
+}
+
+.gallery-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-image-wrapper:hover img {
+  transform: scale(1.1);
+}
+
+/* Custom Scrollbar for Modal */
+.auction-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+.auction-modal-content::-webkit-scrollbar-track {
+  background: #090604;
+  border-radius: 4px;
+}
+.auction-modal-content::-webkit-scrollbar-thumb {
+  background: #E89951;
+  border-radius: 4px;
+}
+.auction-modal-content::-webkit-scrollbar-thumb:hover {
+  background: #FFDA62;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .auction-items-row {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .auction-item-card {
+    width: calc(50% - 15px);
+    padding: 15px;
+  }
+  
+  .item-icon {
+    font-size: 2rem;
+  }
+  
+  .item-name {
+    font-size: 0.9rem;
+  }
+  
+  .modal-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.6rem;
+  }
+  
+  .close-modal-btn {
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+  }
+}

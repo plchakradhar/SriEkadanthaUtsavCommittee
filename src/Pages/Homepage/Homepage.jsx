@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Homepage.css';
 
-import img1 from '../../assets/images/festival1.jpg';
-import img2 from '../../assets/images/festival2.jpg';
-import img3 from '../../assets/images/festival3.jpg';
-import img4 from '../../assets/images/festival4.jpg';
-import img5 from '../../assets/images/festival5.jpg';
-import img6 from '../../assets/images/festival6.jpg';
-import img7 from '../../assets/images/festival7.jpg';
-import img8 from '../../assets/images/festival8.jpg';
+import img1 from '../../assets/images/2018-vigraham.jpeg';
+import img2 from '../../assets/images/2019-vigraham.jpeg';
+import img3 from '../../assets/images/2021-vigraham.jpg';
+import img4 from '../../assets/images/2022-vigraham.jpg';
+import img5 from '../../assets/images/2023-vigraham.jpeg';
+import img6 from '../../assets/images/2024-vigraham.jpg';
+import img7 from '../../assets/images/2025-vigraham.jpg';
+import img8 from '../../assets/images/2025-vigraham.jpg';
+
 
 /* ─────────────────────────────────────────────────────────────
    Sudarshana Chakram SVG  (decorative background wheel)
