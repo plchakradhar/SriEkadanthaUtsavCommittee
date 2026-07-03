@@ -1,21 +1,71 @@
-/* Global reset – no scrollbars on the homepage */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Ramabhadra&display=swap');
+
+/* Global reset & Design System */
+:root {
+  /* Colors */
+  --color-dark-bg: #090604;
+  --color-dark-surface: #140c03;
+  --color-maroon-deep: #1c0000;
+  --color-maroon-light: #3a0000;
+  --color-gold-primary: #FFDA62;
+  --color-gold-secondary: #E89951;
+  --color-gold-accent: #ffd700;
+  --color-text-light: #F7F1DE;
+  --color-text-muted: rgba(247, 241, 222, 0.7);
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(118deg, #F7F1DE 0%, #FFDA62 26%, #ECB65F 50%, #E89951 74%, #622B14 100%);
+  --gradient-dark: linear-gradient(158deg, #090604 0%, #140c03 38%, #1c1207 72%, #060402 100%);
+  --gradient-maroon: linear-gradient(135deg, #3a0000 0%, #1c0000 50%, #0d0000 100%);
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 64px;
+
+  /* Typography */
+  --font-primary: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-title: 'Cinzel', 'Ramabhadra', serif;
+  
+  /* Borders & Shadows */
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --shadow-soft: 0 4px 15px rgba(0,0,0,0.3);
+  --shadow-glow: 0 0 15px rgba(255, 215, 0, 0.3);
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
+  background-color: var(--color-dark-bg);
+  color: var(--color-text-light);
+  overflow-x: hidden; /* CRITICAL: Prevent all horizontal scrolling globally */
+  width: 100vw;
 }
 
 #root {
   width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 *, *::before, *::after {
-  box-sizing: border-box;
+  box-sizing: inherit;
 }
 
 p { margin: 0; }

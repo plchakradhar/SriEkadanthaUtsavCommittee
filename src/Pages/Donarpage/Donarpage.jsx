@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import './Donarpage.css';
 
 // Placeholder generic images for the gallery
@@ -38,6 +39,12 @@ const DONOR_DATA = [
 
 const Donarpage = () => {
   const [selectedDonation, setSelectedDonation] = useState(null);
+  const location = useLocation();
+  const selectedYear = location.state?.year || null;
+
+  const filteredData = selectedYear 
+    ? DONOR_DATA.filter(data => data.year === selectedYear.toString())
+    : DONOR_DATA;
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -78,7 +85,7 @@ const Donarpage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <div className="ganesha-icon">🕉️</div>
+          <div className="ganesha-icon"></div>
           <h1>🙏 Our Generous Donors 🙏</h1>
           <div className="decorative-divider">
             <span>✧</span><hr/><span>✧</span><hr/><span>✧</span>
@@ -90,7 +97,7 @@ const Donarpage = () => {
           {/* Vertical decorative timeline line */}
           <div className="donar-vertical-line"></div>
 
-          {DONOR_DATA.map((data, index) => (
+          {filteredData.map((data, index) => (
             <div key={data.year} className="donar-year-block">
               
               {/* Year Badge */}
@@ -105,7 +112,7 @@ const Donarpage = () => {
               </motion.div>
               
               {/* Timeline Connector */}
-              {index < DONOR_DATA.length && (
+              {index < filteredData.length - 1 && (
                 <div className="donar-connector">▼</div>
               )}
 

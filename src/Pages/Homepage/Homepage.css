@@ -5,15 +5,12 @@
 /* ── Page shell ────────────────────────────────────────────── */
 .homepage {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  background:
-    radial-gradient(ellipse at 22% 8%,  rgba(232,153,81,0.13) 0%, transparent 52%),
-    radial-gradient(ellipse at 78% 95%, rgba(98,43,20,0.24)   0%, transparent 56%),
-    linear-gradient(158deg, #090604 0%, #140c03 38%, #1c1207 72%, #060402 100%);
+  background: var(--gradient-dark);
 }
 
 /* Dot grid */
@@ -29,10 +26,9 @@
 /* ── Chakram SVG ────────────────────────────────────────────── */
 .chakram-bg {
   position: absolute;
-  top: 65%;
+  top: 60vh; /* changed from 65% to fixed vh so it stays behind the hero section */
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Use the smaller viewport axis so it always fits */
   width: min(70vw, 70vh);
   height: min(70vw, 70vh);
   z-index: 0;
@@ -50,11 +46,10 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  height: 100%;
+  height: 100vh; /* Keeps the hero section exactly 1 screen high */
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* push gallery toward lower half – gives good visual balance */
   justify-content: center;
   padding-top: 68px;    /* clear fixed header */
   gap: 0;
@@ -65,25 +60,20 @@
 .title-container {
   cursor: pointer;
   text-align: center;
-  padding: 46px 24px 12px;
+  padding: 46px var(--spacing-lg) 12px;
   flex-shrink: 0;
   user-select: none;
+  width: 100%;
 }
 
 .main-title {
-  font-size: clamp(1.5rem, 3.8vw, 3.6rem);
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 5vw, 4.2rem);
   font-weight: 800;
   margin: 0;
   line-height: 1.1;
   letter-spacing: 0.5px;
-  background: linear-gradient(
-    118deg,
-    #F7F1DE 0%,
-    #FFDA62 26%,
-    #ECB65F 50%,
-    #E89951 74%,
-    #622B14 100%
-  );
+  background: var(--gradient-gold);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -91,9 +81,9 @@
 }
 
 .click-hint {
-  font-size: 0.70rem;
-  color: rgba(255,218,98,0.34);
-  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-sm);
   text-transform: uppercase;
   letter-spacing: 3px;
 }
@@ -109,8 +99,6 @@
   position: relative;
   overflow: hidden;   /* clip outer cards that exceed viewport */
 }
-
-
 
 /* ── Perspective stage ──────────────────────────────────────── */
 .fan-stage {
@@ -150,7 +138,7 @@
   width: 280px;
   height: 370px; /* 2:3 ratio */
   background: transparent;
-  border-radius: 8px;
+  border-radius: var(--border-radius-sm);
   position: relative;
   overflow: hidden;
   box-shadow:
@@ -181,6 +169,27 @@
   pointer-events: none;
 }
 
+/* Year overlay on the card */
+.card-year-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 0, 0, 0.7);
+  color: #FFDA62;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255, 218, 98, 0.4);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  pointer-events: none;
+  z-index: 2;
+}
+
 /* Center card gets an extra golden halo */
 .center-card {
   box-shadow:
@@ -205,15 +214,15 @@
 
 /* ── Question mark card ─────────────────────────────────────── */
 .qm-inner {
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(145deg, #1a0f03, #2e1a06, #1a0f03);
-  border-radius: 2px;
-  gap: 4px;
+  border-radius: var(--border-radius-sm);
+  gap: var(--spacing-xs);
 }
 
 .qm-char {
@@ -233,8 +242,9 @@
 }
 
 .qm-sub {
-  font-size: 0.50rem;
-  color: rgba(255,218,98,0.50);
+  font-size: 0.65rem;
+  color: var(--color-gold-primary);
+  opacity: 0.5;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -242,29 +252,291 @@
 /* ── Bottom hint ────────────────────────────────────────────── */
 .nav-hint {
   flex-shrink: 0;
-  font-size: 0.68rem;
-  color: rgba(255,218,98,0.27);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 2.5px;
-  padding-bottom: 10px;
+  padding-bottom: var(--spacing-md);
   user-select: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   New Sections: Countdown, Nav Cards, Footer
+───────────────────────────────────────────────────────────── */
+
+.section-heading {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  text-align: center;
+  color: var(--color-gold-primary);
+  margin-bottom: 40px;
+  text-shadow: 0 4px 15px rgba(255, 218, 98, 0.4);
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* ── Countdown Timer ── */
+.countdown-section {
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(255,218,98,0.1);
+  background: radial-gradient(ellipse at top, rgba(255,218,98,0.05) 0%, transparent 60%);
+}
+
+.countdown-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.countdown-box {
+  background: rgba(30, 20, 10, 0.6);
+  border: 1px solid rgba(255, 218, 98, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  min-width: 100px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(255, 218, 98, 0.1);
+}
+
+.countdown-value {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--color-text-light);
+  font-family: monospace;
+  text-shadow: 0 0 10px rgba(255, 218, 98, 0.8);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.countdown-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-gold-secondary);
+  font-weight: 600;
+}
+
+/* ── Quick Navigation Portal ── */
+.quick-nav-section {
+  padding: 40px 20px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.nav-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.glass-nav-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(20, 10, 5, 0.6) 100%);
+  border: 1px solid rgba(255, 218, 98, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-nav-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, rgba(255, 218, 98, 0.1) 0%, transparent 40%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glass-nav-card:hover {
+  border-color: rgba(255, 218, 98, 0.6);
+  box-shadow: 0 15px 40px rgba(255, 218, 98, 0.2);
+}
+
+.glass-nav-card:hover::before {
+  opacity: 1;
+}
+
+.nav-icon {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+  transition: transform 0.4s ease;
+}
+
+.glass-nav-card:hover .nav-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.glass-nav-card h3 {
+  font-size: 1.3rem;
+  color: var(--color-gold-primary);
+  margin: 0 0 10px 0;
+}
+
+.glass-nav-card p {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.nav-arrow {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  color: var(--color-gold-secondary);
+  font-size: 1.5rem;
+  opacity: 0.3;
+  transition: all 0.4s ease;
+}
+
+.glass-nav-card:hover .nav-arrow {
+  opacity: 1;
+  transform: translateX(10px);
+}
+
+/* ── Footer ── */
+.home-footer {
+  background: #080502;
+  border-top: 1px solid rgba(255, 218, 98, 0.2);
+  padding: 60px 20px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 300px;
+}
+
+.footer-col h3 {
+  color: var(--color-gold-primary);
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.footer-col p {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.map-wrapper {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 218, 98, 0.3);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(100%) invert(90%) hue-rotate(180deg) contrast(1.2);
+}
+
+.contact-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+  color: var(--color-text-light);
+}
+
+.contact-col ul li {
+  margin-bottom: 10px;
+}
+
+.contact-col ul li strong {
+  color: var(--color-gold-secondary);
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  background: rgba(255, 218, 98, 0.1);
+  color: var(--color-text-light);
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 218, 98, 0.3);
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background: var(--color-gold-primary);
+  color: #000;
+  box-shadow: 0 5px 15px rgba(255, 218, 98, 0.4);
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid rgba(255, 218, 98, 0.1);
+  margin-top: 50px;
+  padding-top: 20px;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .gallery-card { width: 150px; height: 225px; }
-  .floor-reflection { width: 150px; }
+  .gallery-card { width: 180px; height: 270px; }
+  .floor-reflection { width: 180px; }
+  .qm-char { font-size: 3.8rem; }
+  .card-year-overlay { font-size: 1rem; bottom: 15px; padding: 4px 12px; }
 }
 
 @media (max-width: 768px) {
-  .gallery-card { width: 120px; height: 180px; }
+  .gallery-card { width: 140px; height: 210px; }
   .qm-char { font-size: 3.2rem; }
-  .floor-reflection { width: 120px; height: 50px; }
+  .floor-reflection { width: 140px; height: 50px; }
+  .card-year-overlay { font-size: 0.85rem; bottom: 10px; padding: 3px 10px; }
 }
 
 @media (max-width: 480px) {
-  .gallery-card { width: 100px; height: 150px; }
+  .gallery-card { width: 110px; height: 165px; }
   .qm-char { font-size: 2.5rem; }
-  .floor-reflection { width: 100px; height: 36px; }
-  .click-hint { font-size: 0.60rem; }
+  .floor-reflection { width: 110px; height: 36px; }
+  .click-hint { font-size: 0.65rem; }
+  .nav-hint { font-size: 0.6rem; letter-spacing: 1.5px; }
+  .card-year-overlay { font-size: 0.75rem; bottom: 8px; padding: 2px 8px; }
 }

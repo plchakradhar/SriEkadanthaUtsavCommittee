@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import './Timelinepage.css';
 
-import img1 from '../../assets/images/2018-vigraham.jpeg';
-import img2 from '../../assets/images/2018-vigraham.jpeg';
-import img3 from '../../assets/images/2019-vigraham.jpeg';
-import img4 from '../../assets/images/2021-vigraham.jpg';
-import img5 from '../../assets/images/2022-vigraham.jpg';
-import img6 from '../../assets/images/2023-vigraham.jpeg';
-import img7 from '../../assets/images/2024-vigraham.jpg';
-import img8 from '../../assets/images/2025-vigraham.jpg';
-import img9 from '../../assets/images/2025-vigraham.jpg';
+import img1 from '../../assets/vigraham/2018-vigraham.jpeg';
+import img2 from '../../assets/vigraham/2018-vigraham.jpeg';
+import img3 from '../../assets/vigraham/2019-vigraham.jpeg';
+import img4 from '../../assets/vigraham/2021-vigraham.jpg';
+import img5 from '../../assets/vigraham/2022-vigraham.jpg';
+import img6 from '../../assets/vigraham/2023-vigraham.jpeg';
+import img7 from '../../assets/vigraham/2024-vigraham.jpg';
+import img8 from '../../assets/vigraham/2025-vigraham.jpg';
+import img9 from '../../assets/vigraham/2025-vigraham.jpg';
 
 
 const TIMELINE_DATA = [
@@ -34,13 +34,7 @@ const Timelinepage = () => {
   const menuRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Scroll animation for the path
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"]
-  });
 
-  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -64,9 +58,9 @@ const Timelinepage = () => {
     setActiveMenu(activeMenu === idx ? null : idx);
   };
 
-  const navigateTo = (path) => {
+  const navigateTo = (path, state) => {
     setActiveMenu(null);
-    navigate(path);
+    navigate(path, { state });
   };
 
   const isMobile = windowWidth <= 768;
@@ -110,18 +104,8 @@ const Timelinepage = () => {
 
       <div className="timeline-container" style={{ height: `${totalHeight}px` }} ref={containerRef}>
         
-        {/* SVG Path Background - Thin curved dashed line with scroll animation mask */}
+        {/* SVG Path Background - Thin curved dashed line */}
         <svg className="timeline-path-svg">
-          <mask id="lineMask">
-            <motion.path
-              d={pathData}
-              stroke="white"
-              strokeWidth="20"
-              fill="none"
-              style={{ pathLength }}
-            />
-          </mask>
-          
           <path 
             d={pathData} 
             stroke="#FFDA62" 
@@ -129,7 +113,6 @@ const Timelinepage = () => {
             strokeDasharray="12 12" 
             fill="none" 
             strokeLinecap="round"
-            mask="url(#lineMask)"
           />
         </svg>
 
@@ -187,9 +170,9 @@ const Timelinepage = () => {
                     <h3>{item.title}</h3>
                     <p>{item.desc}</p>
                     <div className="popup-actions">
-                      <button onClick={(e) => { e.stopPropagation(); navigateTo('/gallery'); }}>Gallery</button>
-                      <button onClick={(e) => { e.stopPropagation(); navigateTo('/donar'); }}>Donors</button>
-                      <button onClick={(e) => { e.stopPropagation(); navigateTo('/auction'); }}>Auctions</button>
+                      <button onClick={(e) => { e.stopPropagation(); navigateTo('/gallery', { year: item.year }); }}>Gallery</button>
+                      <button onClick={(e) => { e.stopPropagation(); navigateTo('/donar', { year: item.year }); }}>Donors</button>
+                      <button onClick={(e) => { e.stopPropagation(); navigateTo('/auction', { year: item.year }); }}>Auctions</button>
                     </div>
                   </motion.div>
                 )}

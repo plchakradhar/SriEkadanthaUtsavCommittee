@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import './Gallerypage.css';
 
 // Placeholder Images
@@ -12,33 +13,70 @@ const phImg5 = 'https://images.unsplash.com/photo-1582292317584-699745da7992?aut
 // Placeholder Video (Sample public mp4)
 const phVideo1 = 'https://www.w3schools.com/html/mov_bbb.mp4';
 
-// Sample data spanning multiple years to demonstrate grouping
+// Dynamically load all assets for all years (folders starting with 20)
+const imageModules = import.meta.glob('../../assets/20*/**/*.{jpeg,jpg,png,webp}', { eager: true, query: '?url', import: 'default' });
+const videoModules = import.meta.glob('../../assets/20*/**/*.mp4', { eager: true, query: '?url', import: 'default' });
+
+const dynamicItems = [];
+let idCounter = 100;
+
+Object.entries(imageModules).forEach(([path, url]) => {
+  // Extract year and optional subfolder from path (e.g., ../../assets/2025/laddu/img.jpg)
+  const match = path.match(/\/assets\/(20\d{2})\/(?:(.*?)\/)?([^/]+)$/);
+  if (match) {
+    const year = match[1];
+    let subfolder = match[2] || 'All';
+    const folderName = subfolder.charAt(0).toUpperCase() + subfolder.slice(1);
+    
+    dynamicItems.push({
+      id: idCounter++,
+      type: 'photo',
+      year: year,
+      title: `${year} ${folderName}`,
+      description: `A beautiful moment from the ${folderName} collection.`,
+      url: url
+    });
+  }
+});
+
+Object.entries(videoModules).forEach(([path, url]) => {
+  const match = path.match(/\/assets\/(20\d{2})\/(?:(.*?)\/)?([^/]+)$/);
+  if (match) {
+    const year = match[1];
+    let subfolder = match[2] || 'All';
+    const folderName = subfolder.charAt(0).toUpperCase() + subfolder.slice(1);
+    
+    dynamicItems.push({
+      id: idCounter++,
+      type: 'video',
+      year: year,
+      title: `${year} ${folderName} Video`,
+      description: `Highlights from the ${folderName} collection.`,
+      url: url,
+      thumbnail: phImg2 // Placeholder thumbnail for videos
+    });
+  }
+});
+
+// All gallery data is now dynamically loaded from the assets folders
 const GALLERY_DATA = [
-  { id: 1, type: 'photo', year: '2025', title: 'Grand Aarti', description: 'The mesmerizing evening Aarti.', url: phImg4 },
-  { id: 2, type: 'video', year: '2025', title: 'Visarjan Highlights', description: 'Emotional farewell to Lord Ganesha.', url: phVideo1, thumbnail: phImg2 },
-  { id: 3, type: 'photo', year: '2024', title: 'Mandap Decoration', description: 'Beautiful floral decorations.', url: phImg3 },
-  { id: 8, type: 'video', year: '2024', title: 'Celebration Dance', description: 'Devotees dancing in joy.', url: phVideo1, thumbnail: phImg1 },
-  { id: 4, type: 'photo', year: '2023', title: 'Morning Pooja', description: 'Devotees offering prayers.', url: phImg1 },
-  { id: 5, type: 'video', year: '2023', title: 'Dhol Tasha Pathak', description: 'Energetic traditional drumming.', url: phVideo1, thumbnail: phImg5 },
-  { id: 6, type: 'photo', year: '2022', title: 'First Day Sthapana', description: 'Welcoming Bappa home.', url: phImg2 },
-  { id: 7, type: 'photo', year: '2021', title: 'Maha Prasad', description: 'Community feast.', url: phImg5 },
-  { id: 9, type: 'photo', year: '2020', title: 'Eco-friendly Idol', description: 'Our beautiful clay Ganesha.', url: phImg4 },
-  { id: 10, type: 'photo', year: '2019', title: 'The Beginning', description: 'Where it all started.', url: phImg3 },
-  { id: 11, type: 'photo', year: '2018', title: 'Procession', description: 'Walking with Bappa.', url: phImg1 },
-  { id: 12, type: 'photo', year: '2017', title: 'First Setup', description: 'First ever setup.', url: phImg2 },
+  ...dynamicItems
 ];
 
 const Gallerypage = () => {
   const [filter, setFilter] = useState('all');
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(null);
+  const location = useLocation();
+  const selectedYear = location.state?.year || null;
 
   // We need a flat array of filtered data to allow Next/Prev navigation across years
   const flatFilteredData = useMemo(() => {
     return GALLERY_DATA.filter(item => {
+      if (selectedYear && item.year !== selectedYear.toString()) return false;
       if (filter === 'all') return true;
       return item.type === filter;
     }).sort((a, b) => parseInt(b.year) - parseInt(a.year)); // Sort descending by year
-  }, [filter]);
+  }, [filter, selectedYear]);
 
   // Group the flat filtered data by year for display
   const groupedData = useMemo(() => {
@@ -129,16 +167,16 @@ const Gallerypage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <div className="ganesha-silhouette">🐘</div>
-          <h1>📸 Ganesh Chaturthi Memories</h1>
+          <div className="ganesha-silhouette"></div>
+          <h1>Sri Ekadantha Utsav Memories</h1>
           <div className="gallery-divider">
             <span>✿</span><hr/><span>✿</span><hr/><span>✿</span>
           </div>
-          <p>Relive the unforgettable moments from every year of our celebrations.</p>
+          {/* <p>Relive the unforgettable moments from every year of our celebrations.</p> */}
         </motion.div>
 
         {/* Filter Bar */}
-        <div className="gallery-filter-bar">
+        {/* <div className="gallery-filter-bar">
           <button 
             className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
             onClick={() => setFilter('all')}
@@ -157,7 +195,7 @@ const Gallerypage = () => {
           >
             🎥 Videos
           </button>
-        </div>
+        </div> */}
 
         {/* Grouped Masonry Grids by Year */}
         <div className="gallery-years-container">
@@ -177,12 +215,12 @@ const Gallerypage = () => {
                   <hr className="year-line" />
                 </div>
                 
-                <motion.div className="masonry-grid" layout>
+                <motion.div className="horizontal-scroll-container" layout>
                   <AnimatePresence>
                     {group.items.map((item) => (
                       <motion.div 
                         key={item.id}
-                        className="masonry-item"
+                        className="horizontal-item"
                         layout
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -192,26 +230,25 @@ const Gallerypage = () => {
                       >
                         <div className="gallery-card">
                           <div className="gallery-thumbnail">
-                            <img 
-                              src={item.type === 'video' ? item.thumbnail : item.url} 
-                              alt={item.title} 
-                              loading="lazy"
-                            />
-                            {item.type === 'video' && (
-                              <div className="video-play-icon">▶</div>
+                            {item.type === 'video' ? (
+                              <video 
+                                src={item.url} 
+                                className="gallery-video-preview"
+                                muted 
+                                loop 
+                                playsInline
+                                autoPlay
+                              />
+                            ) : (
+                              <img 
+                                src={item.url} 
+                                alt={item.title} 
+                                loading="lazy"
+                              />
                             )}
                             <div className="gallery-card-overlay">
                               <button className="view-btn">View {item.type === 'video' ? 'Video' : 'Photo'}</button>
                             </div>
-                          </div>
-                          
-                          <div className="gallery-card-info">
-                            <div className="card-header">
-                              <span className="media-icon">{item.type === 'video' ? '🎥' : '📷'}</span>
-                              <span className="year-badge">{item.year}</span>
-                            </div>
-                            <h3>{item.title}</h3>
-                            <p>{item.description}</p>
                           </div>
                         </div>
                       </motion.div>

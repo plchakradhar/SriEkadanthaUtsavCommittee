@@ -1,4 +1,5 @@
 import React from 'react';
+import './Prizespage.css';
 
 const Prizespage = () => {
   return (

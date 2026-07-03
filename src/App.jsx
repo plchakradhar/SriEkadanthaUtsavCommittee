@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 
@@ -18,16 +18,6 @@ import Footer from './components/Footer/Footer';
 function AppInner() {
   const location = useLocation();
   const isHome = location.pathname === '/';
-
-  // Lock / unlock page scroll depending on route
-  useEffect(() => {
-    document.body.style.overflow = isHome ? 'hidden' : '';
-    document.documentElement.style.overflow = isHome ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, [isHome]);
 
   return (
     <div className="app">

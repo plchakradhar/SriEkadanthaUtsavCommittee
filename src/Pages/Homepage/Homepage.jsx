@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import './Homepage.css';
 
-import img1 from '../../assets/images/2018-vigraham.jpeg';
-import img2 from '../../assets/images/2019-vigraham.jpeg';
-import img3 from '../../assets/images/2021-vigraham.jpg';
-import img4 from '../../assets/images/2022-vigraham.jpg';
-import img5 from '../../assets/images/2023-vigraham.jpeg';
-import img6 from '../../assets/images/2024-vigraham.jpg';
-import img7 from '../../assets/images/2025-vigraham.jpg';
-import img8 from '../../assets/images/2025-vigraham.jpg';
+import img1 from '../../assets/vigraham/2017-vigraham.png';
+import img2 from '../../assets/vigraham/2018-vigraham.jpeg';
+import img3 from '../../assets/vigraham/2019-vigraham.jpeg';
+import img4 from '../../assets/vigraham/2021-vigraham.jpg';
+import img5 from '../../assets/vigraham/2022-vigraham.jpg';
+import img6 from '../../assets/vigraham/2023-vigraham.jpeg';
+import img7 from '../../assets/vigraham/2024-vigraham.jpg';
+import img8 from '../../assets/vigraham/2025-vigraham.jpg';
+// import img9 from '../../assets/vigraham/2025-vigraham.jpg';
 
 
 /* ─────────────────────────────────────────────────────────────
@@ -121,8 +123,44 @@ const SLOTS = [
   { x:  300, z: -95,  rotY:  28, scale: 0.72, opacity: 0.52 },
 ];
 
-const CARD_DATA = [img1, img2, img3, img4, img5, img6, img7, img8, null];
+const CARD_DATA = [
+  { img: img1, year: '2017' },
+  { img: img2, year: '2018' },
+  { img: img3, year: '2019' },
+  { img: img4, year: '2021' },
+  { img: img5, year: '2022' },
+  { img: img6, year: '2023' },
+  { img: img7, year: '2024' },
+  { img: img8, year: '2025' },
+  { img: null, year: null }
+];
 const TOTAL = CARD_DATA.length; // 9
+
+/* ─────────────────────────────────────────────────────────────
+   Countdown Timer Hook
+───────────────────────────────────────────────────────────── */
+const calculateTimeLeft = (target) => {
+  const difference = +new Date(target) - +new Date();
+  if (difference > 0) {
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    };
+  }
+  return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+};
+
+/* ─────────────────────────────────────────────────────────────
+   Quick Navigation Data
+───────────────────────────────────────────────────────────── */
+const NAV_CARDS = [
+  { id: 'timeline', title: 'The Timeline', icon: '🕰️', desc: 'Journey through the years', path: '/timeline' },
+  { id: 'gallery', title: 'Full Gallery', icon: '🖼️', desc: 'Memories of devotion', path: '/gallery' },
+  { id: 'donors', title: 'Our Donors', icon: '🙏', desc: 'Pillars of our support', path: '/donar' },
+  { id: 'auction', title: 'Auction History', icon: '💎', desc: 'Legacy of divine offerings', path: '/auction' }
+];
 
 /* ─────────────────────────────────────────────────────────────
    Main component
@@ -130,6 +168,18 @@ const TOTAL = CARD_DATA.length; // 9
 const Homepage = () => {
   const [centerIdx, setCenterIdx] = useState(0);
   const [isTelugu,  setIsTelugu]  = useState(false);
+  const navigate = useNavigate();
+
+  // Target date for next Vinayaka Chavithi (Approx 2026-09-14)
+  const targetDate = '2026-09-14T00:00:00';
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(targetDate));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [targetDate]);
 
   const getCard = (offset) =>
     CARD_DATA[((centerIdx + offset) % TOTAL + TOTAL) % TOTAL];
@@ -202,7 +252,9 @@ const Homepage = () => {
 
             {SLOTS.map((slot, slotIdx) => {
               const offset = slotIdx - 2; // -2 … +2
-              const imgSrc = getCard(offset);
+              const cardItem = getCard(offset);
+              const imgSrc = cardItem.img;
+              const year = cardItem.year;
               const isCenter = slotIdx === 2;
 
               return (
@@ -223,11 +275,12 @@ const Homepage = () => {
                       <>
                         <img src={imgSrc} alt="Festival" draggable={false} />
                         <div className="card-shine" />
+                        {year && <div className="card-year-overlay">{year}</div>}
                       </>
                     ) : (
                       <div className="qm-inner">
                         <span className="qm-char">?</span>
-                        <p className="qm-sub">Coming Soon</p>
+                        <p className="qm-sub">2026 Coming Soon</p>
                       </div>
                     )}
                   </div>
@@ -242,6 +295,92 @@ const Homepage = () => {
 
         <p className="nav-hint">◀ Swipe or tap images to browse ▶</p>
       </div>
+
+      {/* ── Countdown Section ── */}
+      <motion.div 
+        className="countdown-section"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h2 className="section-heading">Time Until Next Utsav</h2>
+        <div className="countdown-container">
+          {Object.entries(timeLeft).map(([unit, value]) => (
+            <div key={unit} className="countdown-box">
+              <div className="countdown-value">{value.toString().padStart(2, '0')}</div>
+              <div className="countdown-label">{unit}</div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ── Quick Navigation Section ── */}
+      <motion.div 
+        className="quick-nav-section"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h2 className="section-heading full-width">Explore Our Heritage</h2>
+        <div className="nav-cards-grid">
+          {NAV_CARDS.map((card, i) => (
+            <motion.div 
+              key={card.id} 
+              className="glass-nav-card"
+              onClick={() => navigate(card.path)}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              whileHover={{ scale: 1.05, y: -10 }}
+            >
+              <div className="nav-icon">{card.icon}</div>
+              <h3>{card.title}</h3>
+              <p>{card.desc}</p>
+              <div className="nav-arrow">➔</div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ── Footer / Contact Section ── */}
+      <footer className="home-footer">
+        <div className="footer-content">
+          <div className="footer-col location-col">
+            <h3>📍 Location</h3>
+            <p>Sri Ekadantha Utsav Committee Pandal<br />Sri ram Nagar, Dorasanipalli Road<br />Proddatur, AndhraPradesh, 516360</p>
+            {/* Stylized Google Map Embed - using a generic map embed for demo */}
+            <div className="map-wrapper">
+              <iframe 
+                title="Location Map"
+                src="https://www.google.com/maps/place/1269,+Dorasanipalli+Rd,+Dorasanipalli,+Proddatur,+Andhra+Pradesh+516360/@14.7514035,78.5383881,17z/data=!3m1!4b1!4m6!3m5!1s0x3bb4789f2c6ed177:0x6674b74f2fe63242!8m2!3d14.7514035!4d78.540963!16s%2Fg%2F11rptglk2r?entry=tts&g_ep=EgoyMDI2MDYyOS4wIPu8ASoASAFQAw%3D%3D&skid=43557458-0d1a-41eb-8329-8b95cf46368e" 
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
+          
+          <div className="footer-col contact-col">
+            <h3>📞 Contact & Support</h3>
+            <p>We welcome volunteers and devotees to join our committee efforts.</p>
+            <ul>
+              {/* <li><strong>Phone:</strong> +91 98765 43210</li>
+              <li><strong>Email:</strong> support@ekadantha.org</li> */}
+            </ul>
+            <div className="social-links">
+              <a href="https://www.instagram.com/sri_ekadantha_utsav_committee?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" className="social-icon">📸 Instagram</a>
+              {/* <a href="#" className="social-icon">📘 Facebook</a>
+              <a href="#" className="social-icon">💬 WhatsApp</a> */}
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} Sri Ekadantha Utsav Committee. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };

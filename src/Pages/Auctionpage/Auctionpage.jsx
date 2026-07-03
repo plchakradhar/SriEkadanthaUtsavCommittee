@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import './Auctionpage.css';
 
 // Placeholder generic images for the gallery
@@ -36,6 +37,12 @@ const AUCTION_DATA = [
 
 const Auctionpage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const location = useLocation();
+  const selectedYear = location.state?.year || null;
+
+  const filteredData = selectedYear 
+    ? AUCTION_DATA.filter(data => data.year === selectedYear.toString())
+    : AUCTION_DATA;
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -81,50 +88,52 @@ const Auctionpage = () => {
           {/* Vertical decorative timeline line */}
           <div className="vertical-line"></div>
 
-          {AUCTION_DATA.map((data, index) => (
-            <div key={data.year} className="timeline-year-block">
+          {filteredData.map((data, index) => {
+            const isLeft = index % 2 === 0;
+            return (
+            <div key={data.year} className={`timeline-year-block ${isLeft ? 'left' : 'right'}`}>
               
-              {/* Year Badge */}
-              <motion.div 
-                className="year-badge-wrapper"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.8 }}
-                transition={{ duration: 0.5, type: 'spring' }}
-              >
-                <div className="year-badge">
+              {/* Center Node (Year Emblem) */}
+              <div className="timeline-center-node">
+                <motion.div 
+                  className="year-badge"
+                  initial={{ opacity: 0, scale: 0, rotate: -45 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                  viewport={{ once: true, amount: 0.8 }}
+                  transition={{ duration: 0.8, type: 'spring', bounce: 0.5 }}
+                >
                   {data.year}
-                </div>
-              </motion.div>
-              
-              {/* Down Arrow / Timeline Connector */}
-              {index < AUCTION_DATA.length && (
-                <div className="down-connector">⬇</div>
-              )}
+                </motion.div>
+              </div>
 
-              {/* Auction Items Row */}
-              <div className="auction-items-row">
-                {data.items.map((item, i) => (
-                  <motion.div 
-                    key={item.id}
-                    className="auction-item-card"
-                    onClick={() => openModal(data.year, item)}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 0.5, delay: i * 0.15 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                  >
-                    <div className="item-icon-wrapper">
-                      <span className="item-icon">{item.icon}</span>
-                    </div>
-                    <div className="item-name">{item.name}</div>
-                  </motion.div>
-                ))}
+              {/* Connecting branch to items */}
+              <div className="timeline-branch"></div>
+
+              {/* Content Box (Items) */}
+              <div className="timeline-content-wrapper">
+                <div className="auction-items-row">
+                  {data.items.map((item, i) => (
+                    <motion.div 
+                      key={item.id}
+                      className="auction-item-card"
+                      onClick={() => openModal(data.year, item)}
+                      initial={{ opacity: 0, y: 100, rotateY: 30, scale: 0.8 }}
+                      whileInView={{ opacity: 1, y: 0, rotateY: 0, scale: 1 }}
+                      viewport={{ once: true, amount: 0.4 }}
+                      transition={{ duration: 0.8, delay: i * 0.15, type: 'spring', bounce: 0.4 }}
+                      whileHover={{ scale: 1.05, y: -8, boxShadow: '0 20px 40px rgba(255,218,98,0.3)' }}
+                    >
+                      <div className="item-icon-wrapper">
+                        <span className="item-icon">{item.icon}</span>
+                      </div>
+                      <div className="item-name">{item.name}</div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
 
             </div>
-          ))}
+          )})}
         </div>
       </div>
 

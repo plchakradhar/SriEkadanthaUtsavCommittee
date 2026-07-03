@@ -1,4 +1,5 @@
 import React from 'react';
+import './Contactpage.css';
 
 const Contactpage = () => {
   return (
